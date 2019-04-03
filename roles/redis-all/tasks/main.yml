@@ -1,0 +1,49 @@
+---
+- name: Install environment
+  yum:
+   name: gcc-c++
+   state: latest
+
+- name: get redis install file
+  get_url: url=http://roobo-archive.oss-cn-beijing.aliyuncs.com/op/soft/aisaas/{{ item }} dest={{ source_dir }}/{{ item }}
+  with_items:
+    - "{{ redis_version }}.tar.gz"
+   
+#- name: Copy Redis install file
+#  copy: src={{ item }} dest={{ source_dir }}/{{ item }} mode=0640 owner=root group=root
+#  with_items:
+#    - "{{ redis_version }}.tar.gz"
+
+- name: Unzip Redis.tar.gz
+  unarchive: src={{ source_dir }}/{{ item }} dest={{ source_dir }} remote_src=yes
+  with_items:
+    - "{{ redis_version }}.tar.gz"
+
+- name: make redis
+  command: make chdir={{ source_dir }}/{{ redis_version }}
+
+- name: make install redis
+  command: make install chdir={{ source_dir }}/{{ redis_version }}
+  
+- name: redis conf,data,log,run,bin
+  shell: mkdir -p {{ install_dir }}/{conf,data,log,run,bin}
+
+- name: copy redis.conf
+  copy: src={{ item }} dest={{ install_dir }}/conf/redis.conf mode=0644
+  with_items:
+    - "redis.conf"
+
+- name: redis bin conf
+  shell: mv /usr/local/bin/redis* /opt/redis/bin/
+
+- name: copy REDISD
+  copy: src={{ item }} dest=/etc/init.d/redis mode=0755
+  with_items:
+    - "redis"
+
+- name: Start Redis Service
+  service:
+    name: redis
+    state: restarted
+    enabled: yes
+

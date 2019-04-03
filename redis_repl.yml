@@ -1,0 +1,19 @@
+---
+#主、从redis服务部署
+- hosts: all
+  gather_facts: False
+  roles:
+    - redis-all
+
+#配置sentinel
+#- hosts: masters
+#  gather_facts: False
+#  roles:
+#    - redis-master
+
+#从库配置主库的slaveof信息
+- hosts: slaves
+  gather_facts: False
+  roles:
+    - redis-slave
+

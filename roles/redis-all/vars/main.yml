@@ -1,0 +1,4 @@
+redis_version: redis-4.0.1
+source_dir: /tmp
+install_dir: /opt/redis
+data_dir: /opt/redis/data

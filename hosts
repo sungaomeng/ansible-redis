@@ -1,0 +1,25 @@
+[all:vars]
+ansible_ssh_port=22
+#指定SSH端口
+ansible_ssh_user=root
+#指定SSH账户
+ansible_ssh_pass=Juan365Roobo2016
+#指定SSH密码
+ansible_become=1
+#ssh用户为非root用户时指定
+ansible_become_user=root
+#将普通用户切换至root用户执行
+ansible_become_method=sudo
+#用户切换方法使用sudo
+
+
+#192.168.1.70 ansible_ssh_user=root ansible_ssh_port=22 ansible_ssh_pass=Juan365Roobo2016
+[masters]
+192.168.1.69
+
+[slaves]
+192.168.1.70
+
+[all:children]
+masters
+slaves

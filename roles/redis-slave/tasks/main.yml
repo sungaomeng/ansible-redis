@@ -1,0 +1,9 @@
+---
+- name: set slaveof
+  lineinfile: dest={{ install_dir }}/conf/redis.conf line='slaveof {{ redis_master }} 6379'
+
+- name: Start redis Service
+  service:
+    name: redis
+    state: restarted
+    enabled: yes

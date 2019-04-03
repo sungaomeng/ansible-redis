@@ -1,0 +1,2 @@
+redis_master: 192.168.1.69
+install_dir: /opt/redis
